@@ -1,0 +1,7 @@
+{
+  "energy":["CPG", "PD", "OBE"],
+  "cannabanis":["ACB", "WEED", "APH"],
+  "smallcap":["ET", "PYR", "SEV", "TNT.UN", "JTR", "PLC"],
+  "largecap":["BB", "BBD.B"],
+  "us":["MSFT:US"]
+}

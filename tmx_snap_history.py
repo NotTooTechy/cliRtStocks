@@ -10,7 +10,7 @@ from tmx_learn import stock
 
 
 
-def main(symb, ndays, _date):
+def hist(symb, ndays, _date):
 
 
 	link_base = "https://web.tmxmoney.com/json/getPriceHistory.json.php?jsoncallback=?&qm_symbol=%s&date=DDD&webmasterId=101020"
@@ -41,4 +41,4 @@ if __name__ == "__main__":
 	symbol=sys.argv[0]
 	numdays=sys.argv[1]
 	print symbol, numdays
-	main(symbol, int(numdays), date)
+	hist(symbol, int(numdays), date)
