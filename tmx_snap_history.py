@@ -10,15 +10,11 @@ from tmx_learn import stock
 
 
 
-def hist(symb, ndays, _date):
-
-
+def hist(symb, ndays, _date, step=1):
 	link_base = "https://web.tmxmoney.com/json/getPriceHistory.json.php?jsoncallback=?&qm_symbol=%s&date=DDD&webmasterId=101020"
-	#link = link_base.replace("DDD", _date)
 	link = link_base%symb
 	today = datetime.datetime.today()
 	current_date=today
-	#share = stock(symb)
 	print
 	i=0
 	for loop in range(ndays):
@@ -32,13 +28,16 @@ def hist(symb, ndays, _date):
 			share.print_attr()
 		except:
 			pass
-		i=-1
+		i=-1*step
 		print
 
-#share.print_attr()
 if __name__ == "__main__":
 	date = datetime.datetime.today().strftime('%Y/%m/%d')
 	symbol=sys.argv[0]
 	numdays=sys.argv[1]
+  	try:
+		step=sys.argv[2]
+   	except:
+    		step = 1
 	print symbol, numdays
-	hist(symbol, int(numdays), date)
+	hist(symbol, int(numdays), date, int(step))

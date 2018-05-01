@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import urllib2
 import json
 from string import ascii_lowercase
