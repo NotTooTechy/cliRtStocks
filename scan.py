@@ -6,7 +6,7 @@ import datetime
 import time
 from commands import getoutput
 print "\033[0;0m"
-
+# 
 link = "https://web.tmxmoney.com/json/getQuotesMini.json.php?jsoncallback=?&symbols=%s&webmasterId=101020"
 _commodities = "https://web.tmxmoney.com/embed/commodities/embed.js.php?toolWidth=250&amp;locale=EN&amp;webmasterId=101020"
 _history = "https://web.tmxmoney.com/json/getPriceHistory.json.php?jsoncallback=?&qm_symbol=%s&date=DDD&webmasterId=101020"
@@ -17,11 +17,14 @@ def hist(symb):
 	date = today.strftime('%Y/%m/%d')
 	link = _history.replace("DDD", date)
 	content=urllib2.urlopen(link%symb).read()
-	content = content.strip()
-	content = content.strip("?(")
-	content = content.strip(");")
-	content = json.loads(content)
-	print content
+  	try:
+		content = content.strip()
+		content = content.strip("?(")
+		content = content.strip(");")
+		content = json.loads(content)
+	except:
+		pass
+	return content
 
 	
 def oil():

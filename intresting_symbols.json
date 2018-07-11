@@ -1,8 +1,10 @@
 {
-  "energy":["CPG", "PD", "OBE"],
+  "energy":["CPG", "PD", "OBE", "TSX", "MEG"],
   "cannabanis":["ACB", "WEED", "APH"],
-  "smallcap":["ET", "PYR", "SEV", "TNT.UN", "JTR", "PLC"],
+  "smallcap":["PYR", "SEV", "ET", "TNT.UN", "IIP.UN", "JTR", "PLC", "HWO", "PHO"],
   "largecap":["BB", "BBD.B"],
   "us":["MSFT:US"],
-  "moj": ["PYR", "PD", "OBE", "ACB", "SEV", "BB", "MSFT:US"]
+  "tsx":["tsx"],
+  "moj": ["PYR", "CPG", "PHO", "OBE", "ACB", "SEV", "BB", "HWO", "JTR", "MSFT:US"],
+  "venture":["ROE", "NXO", "YFI", "ALY", "TH", "SLL"]
 }

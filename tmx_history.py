@@ -11,6 +11,7 @@ today = datetime.datetime.today()
 date = today.strftime('%Y/%m/%d')
 link_base = "https://web.tmxmoney.com/json/getPriceHistory.json.php?jsoncallback=?&qm_symbol=%s&date=DDD&webmasterId=101020"
 link = link_base.replace("DDD", date)
+print link
 
 '''
 https://web.tmxmoney.com/json/getPriceHistory.json.php?jsoncallback=?&qm_symbol=et&date=2017-10-05&webmasterId=101020
