@@ -1,0 +1,6 @@
+rm data/*.*;./b5.py bb.to short=4
+rm data/*.*;./b5.py obe.to short=4
+rm data/*.*;./b5.py bbd-b.to short=4
+rm data/*.*;./b5.py pd.to short=22
+rm data/*.*;./b5.py cpg.to short=4
+rm data/*.*;./b5.py pli.to short=3

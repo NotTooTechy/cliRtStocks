@@ -31,7 +31,7 @@ if any("long" in s for s in sys.argv):
 ticker = sys.argv[1]
 instr = pdr.get_data_yahoo(ticker, 
                           start=datetime.datetime(2018, 1, 1), 
-                          end=datetime.datetime(2018, 9, 1))
+                          end=datetime.datetime(2019, 5, 1))
 fname = 'data/%s.csv'%ticker
 if not os.path.exists(fname):
   instr.to_csv(fname)
@@ -104,15 +104,12 @@ for loop in signals['short_mavg']:
 '''
 #print
 size = len(signals['close'])
-capital = 5000.0
+capital = 22000.0
 icapital = cp(capital)
 buy_flag = True
 sell_flag = False
 step_sell = 0
-step_buy = 0
-step_buy_th =  -1
-step_sell_th = 6
-step_sell_th =-1 
+step_sell_th = 6 
 if fprint:
 	print
 	print 'Date\tClose\tShort_avg\tLong_avg'
@@ -123,7 +120,7 @@ for i in range(size):
 	long_mavg= round(signals['long_mavg'][i], 3)
 	if fprint:
 		print date.date(), close, short_mavg, long_mavg,
-	if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy > step_buy_th:
+	if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500:
 		if fprint:
 			print '\tBUY at', close, ' \t\tEnter capital', capital, 
 		buy_flag = False
@@ -131,7 +128,6 @@ for i in range(size):
 		buy_size = int(capital/close)
 		leftover = buy_size*buy_size - 10
 		capital = capital - buy_size*close
-		step_buy=0
 		#print date, 'Buying at %s, size: %s'%(close, buy_size),
 		if fprint:
 			print '\t\tExit capital', capital,
@@ -145,8 +141,6 @@ for i in range(size):
 		#print date, 'Selling at', signals['close'][i],
 		if fprint:
 			print '\t\tExit capital', capital,
-	elif close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500:
-		step_buy+=1
 	elif 1*close < short_mavg and i > 30 and sell_flag:
 		step_sell+=1
 	if fprint:

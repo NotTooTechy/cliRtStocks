@@ -4,5 +4,7 @@
 	"PD.TO" : 25,
 	"CPG.TO" : 10,
 	"MEG.TO" : 24,
+	"ACB.TO" : 6,
+	"PLC.TO" : 6,
 	"BB.TO" : 9 
 }
