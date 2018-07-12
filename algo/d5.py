@@ -30,7 +30,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=5000.0, step_buy_th=STEP_BU
 	step_buy = 0
 	long_window = short_window
 	instr = pdr.get_data_yahoo(ticker,
-	                          start=datetime.datetime(2017, 1, 1),
+	                          start=datetime.datetime(2018, 1, 1),
 	                          end=datetime.datetime(2018, 9, 1))
 	fname = 'data/%s.csv'%ticker
 	if not os.path.exists(fname):
@@ -77,15 +77,17 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=5000.0, step_buy_th=STEP_BU
 			if fprint:
 				print '\t\tExit capital', capital,'\t\t', capital - captial_at_buy_time,
 		elif close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500:
-			step_buy+=1
+			step_sell=0
 		elif 1*close < short_mavg and i > 30 and sell_flag:
 			step_sell+=1
+		else:
+			pass#step_sell = 0
 		if fprint:
 			print step_sell
 
 	if not buy_flag:
 		capital += buy_size*close -10
-	if fprint:
+	if fprint or True:
 		print
 		print ticker.upper(), '\t',
 		print INITIAL_CAPITAL, capital, '\tprofit:',capital - INITIAL_CAPITAL
