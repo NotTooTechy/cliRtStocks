@@ -1,0 +1,6 @@
+#Fri Jul 13 13:54:23 EDT 2018
+./d5.py ur.to short=9 debug
+./d5.py hou.to short=6
+./d5.py bb.to short=17 capital=17000 
+./d5.py meg.to short=23 capital=17000 
+./d5.py acb.to short=6 capital=17000 

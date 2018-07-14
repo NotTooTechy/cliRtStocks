@@ -22,19 +22,19 @@ long_window = 40
 
 fprint = json.loads(os.environ.get('fprint','false').lower())
 
-def sma_return(ticker, short_window, INITIAL_CAPITAL=100.0*1000.0, step_buy_th=STEP_BUY_THERESHOLD, step_sell_th=STEP_SELL_THRESHOLD):
+def sma_return(ticker, short_window, INITIAL_CAPITAL=10000.0, step_buy_th=STEP_BUY_THERESHOLD, step_sell_th=STEP_SELL_THRESHOLD):
 	capital = INITIAL_CAPITAL
 	buy_flag = True
 	sell_flag = False
 	step_sell = 0
 	step_buy = 0
 	long_window = short_window
-	instr = pdr.get_data_yahoo(ticker,
-	                          start=datetime.datetime(2017, 1, 1),
-	                          end=datetime.datetime(2019, 1, 1))
+	#jinstr = pdr.get_data_yahoo(ticker,
+	 #                         start=datetime.datetime(2018, 1, 1),
+	 #                         end=datetime.datetime(2018, 9, 1))
 	fname = 'data/%s.csv'%ticker
 	if not os.path.exists(fname):
-	  instr.to_csv(fname)
+	  pass#instr.to_csv(fname)
 	df = pd.read_csv(fname, header=0, index_col='Date', parse_dates=True)
 	signals = pd.DataFrame(index=instr.index)
 	signals['signal'] = 0.0
@@ -66,7 +66,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=100.0*1000.0, step_buy_th=S
 			step_buy=0
 			#print date, 'Buying at %s, size: %s'%(close, buy_size),
 			if fprint:
-				pass#print '\t\tExit capital', capital,
+				print '\t\tExit capital', capital,
 		elif close < short_mavg and i > 30 and sell_flag and step_sell>step_sell_th:
 			if fprint:
 				print '\tSELL at', close, '\t\tEnter capital', capital,'\t\t',
@@ -76,10 +76,6 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=100.0*1000.0, step_buy_th=S
 			capital += buy_size*close-10
 			if fprint:
 				print '\t\tExit capital', capital,'\t\t', capital - captial_at_buy_time,
-				if  capital - captial_at_buy_time >0:
-					print "\t\t", "GAIN",
-				else:
-					print "\t\t", "LOSS",
 		elif close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500:
 			step_sell=0
 		elif 1*close < short_mavg and i > 30 and sell_flag:
@@ -112,10 +108,4 @@ if __name__=='__main__':
 		llong = sys.argv[index].split('=')[1]
 		long_window = int(llong)
 	_ticker = sys.argv[1]
-	if any("capital" in s for s in sys.argv):
-		index = [i for i, s in enumerate(sys.argv) if 'capital' in s][0]
-		capital = sys.argv[index].split('=')[1]
-		capital = float(capital)
-		sma_return(_ticker, INITIAL_CAPITAL=capital,short_window=sshort)
-	else:
-		sma_return(_ticker, short_window=sshort)
+	sma_return(_ticker, short_window=sshort)
