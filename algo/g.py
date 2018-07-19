@@ -88,6 +88,6 @@ class GoogleIntradayQuote(Quote):
 if __name__ == '__main__':
   import sys
   ticker = sys.argv[1]
-  q = GoogleIntradayQuote(ticker.upper(),30,1)
+  q = GoogleIntradayQuote(ticker.upper(),60,1)
   print q                                           # print it out
   q.write_csv('data/%s.csv'%ticker)

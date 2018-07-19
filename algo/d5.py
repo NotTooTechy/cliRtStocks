@@ -22,7 +22,7 @@ long_window = 40
 
 fprint = json.loads(os.environ.get('fprint','false').lower())
 
-def sma_return(ticker, short_window, INITIAL_CAPITAL=100.0*1000.0, step_buy_th=STEP_BUY_THERESHOLD, step_sell_th=STEP_SELL_THRESHOLD):
+def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=STEP_BUY_THERESHOLD, step_sell_th=STEP_SELL_THRESHOLD):
 	capital = INITIAL_CAPITAL
 	buy_flag = True
 	sell_flag = False
@@ -30,7 +30,8 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=100.0*1000.0, step_buy_th=S
 	step_buy = 0
 	long_window = short_window
 	instr = pdr.get_data_yahoo(ticker,
-	                          start=datetime.datetime(2017, 1, 1),
+	                          #start=datetime.datetime(2018, 1, 1),
+	                          start=datetime.datetime(2017, 7, 1),
 	                          end=datetime.datetime(2019, 1, 1))
 	fname = 'data/%s.csv'%ticker
 	if not os.path.exists(fname):

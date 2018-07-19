@@ -4,3 +4,4 @@
 ./d5.py bb.to short=17 capital=17000 
 ./d5.py meg.to short=23 capital=17000 
 ./d5.py acb.to short=6 capital=17000 
+./d5.py oble.to short=4 capital=17000 

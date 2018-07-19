@@ -15,7 +15,7 @@ import numpy as np
 ticker = sys.argv[1]
 instr = pdr.get_data_yahoo(ticker, 
                           start=datetime.datetime(2017, 1, 1), 
-                          end=datetime.datetime(2018, 8, 1))
+                          end=datetime.datetime(2018, 8, 1))j
 fname = 'data/%s.csv'%ticker
 if not os.path.exists(fname):
   instr.to_csv(fname)
