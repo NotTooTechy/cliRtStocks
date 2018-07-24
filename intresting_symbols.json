@@ -1,5 +1,5 @@
 {
-  "energy":["CPG", "PD", "OBE", "TSX", "MEG", "HOU"],
+  "energy":["CPG", "PD", "OBE", "TSX", "MEG", "HOU", "CVE"],
   "cannabanis":["ACB", "WEED", "APH"],
   "smallcap":["PYR", "SEV", "ET", "TNT.UN", "IIP.UN", "JTR", "PLC", "HWO", "PHO"],
   "largecap":["BB", "BBD.B"],

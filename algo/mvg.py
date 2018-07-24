@@ -49,7 +49,11 @@ class sma_return:
 	
 	def get_data(self, fresh=True):
 		fname = 'data/%s.csv'%self.ticker.lower()
-		instr = pdr.get_data_yahoo(self.ticker, start=self.start, end=self.end)
+		try:
+			instr = pdr.get_data_yahoo(self.ticker, start=self.start, end=self.end)
+		except:
+			return None, None
+			
 		instr.to_csv(fname)
 		df = pd.read_csv(fname, header=0, index_col='Date', parse_dates=True)
 		return instr, df

@@ -23,11 +23,17 @@ if l is not None:
 
 with open("best_avg.json", 'r') as f:
 	data = json.load(f)
+#with open("tsx_best.json", 'r') as f:
+#	data = json.load(f)
 
 cmd = "python d5.py %s short=%s debug | tail -n %d"
 for ticker, short in data.iteritems():
+	if type(short) is list:
+		sshort = short[0]
+	else:
+		sshort = short
 	print "-"*80
-	print gout(cmd%(ticker, short, lines))
+	print gout(cmd%(ticker, sshort, lines))
 
 
 
