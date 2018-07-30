@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import json
 from commands import getoutput as gout
@@ -16,15 +18,24 @@ def check_entry(cmd_arg):
 	return None
 
 
-lines = 15
 l = check_entry("lines")
 if l is not None:
 	lines = int(l)
+else:
+	lines = 15
 
-with open("best_avg.json", 'r') as f:
+fjson = check_entry("json")
+if fjson is None:
+	with open("json/best_avg.json", 'r') as f:
+		data = json.load(f)
+else:
+	with open(fjson, 'r') as f:
+		data = json.load(f)
+	
+'''
+with open("tsx_best.json", 'r') as f:
 	data = json.load(f)
-#with open("tsx_best.json", 'r') as f:
-#	data = json.load(f)
+'''
 
 cmd = "python d5.py %s short=%s debug | tail -n %d"
 for ticker, short in data.iteritems():

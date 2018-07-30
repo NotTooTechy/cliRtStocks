@@ -12,13 +12,15 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from copy import deepcopy as cp
+from __init__ import START_DATE, END_DATE
 
 #INITIAL_CAPITAL = 5000.0
 STEP_BUY_THERESHOLD =  -1
 STEP_SELL_THRESHOLD = 6
+#STEP_SELL_THRESHOLD = 7
 
 short_window = 20
-long_window = 40
+long_window = 50
 
 fprint = json.loads(os.environ.get('fprint','false').lower())
 
@@ -28,11 +30,11 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	sell_flag = False
 	step_sell = 0
 	step_buy = 0
-	long_window = short_window
+	#long_window = short_window
 	instr = pdr.get_data_yahoo(ticker,
-	                          #start=datetime.datetime(2018, 1, 1),
-	                          start=datetime.datetime(2017, 7, 1),
-	                          end=datetime.datetime(2019, 1, 1))
+	                          #start=datetime.datetime(2017, 7, 1),
+	                          start=START_DATE,
+	                          end=END_DATE)
 	fname = 'data/%s.csv'%ticker
 	if not os.path.exists(fname):
 	  instr.to_csv(fname)

@@ -21,9 +21,9 @@ class gstock:
 		f = open(self.csv_fname, 'w')
 		f.write(out)
 		f.close()
-		df = pd.DataFrame(out)
-		df.to_csv(self.csv_fname)
-		return df
+		#df = pd.DataFrame(out)
+		#df.to_csv(self.csv_fname)
+		#return df
 
 	def read_csv(self):
 		self.df = pd.read_csv(self.csv_fname)

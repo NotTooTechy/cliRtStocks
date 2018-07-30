@@ -16,10 +16,9 @@ import urllib, time
 import  pandas as pd
 
 #INITIAL_CAPITAL = 5000.0
-STEP_BUY_THERESHOLD =  -1
-STEP_SELL_THRESHOLD = 6
+STEP_BUY_THERESHOLD =  0 
 STEP_SELL_THRESHOLD = 1
-
+SKIP =5 
 short_window = 20
 long_window = 40
 
@@ -75,8 +74,8 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	step_buy = 0
 	long_window = short_window
 	instr = gstock(ticker)
-	instr.ndays = 150
-	instr.minutes = 60
+	instr.ndays = 1
+	instr.minutes = 1
 	instr.pull_data_to_csv()
 	instr.read_csv()
 	signals = pd.DataFrame(index=instr.df.index)
@@ -97,7 +96,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 		long_mavg= round(signals['long_mavg'][i], 3)
 		if fprint:
 			print date, close, short_mavg, long_mavg,
-		if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy > step_buy_th:
+		if close > short_mavg and close > long_mavg and i > SKIP and buy_flag and capital > 500 and step_buy > step_buy_th:
 			if fprint:
 				print '\tBUY at %.3f'%close, ' \t\tEnter capital %.3f'%capital,
 			buy_flag = False

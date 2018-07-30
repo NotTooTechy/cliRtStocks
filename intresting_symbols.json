@@ -3,7 +3,7 @@
   "cannabanis":["ACB", "WEED", "APH"],
   "smallcap":["PYR", "SEV", "ET", "TNT.UN", "IIP.UN", "JTR", "PLC", "HWO", "PHO"],
   "largecap":["BB", "BBD.B"],
-  "us":["MSFT:US"],
+  "us":["MSFT:US","GBTC:US"],
   "tsx":["tsx"],
   "moj": ["PYR", "CPG", "PHO", "OBE", "ACB", "SEV", "BB", "HWO", "JTR", "MSFT:US"],
   "venture":["ROE", "NXO", "YFI", "ALY", "TH", "SLL"]

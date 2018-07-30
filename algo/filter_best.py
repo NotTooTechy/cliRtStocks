@@ -1,8 +1,16 @@
 import json
 import time
 from copy import deepcopy as cp
+from __init__ import chk_arg
 
-with open('tsx_scan.json', 'r') as f:
+
+fname = "tsx_scan.json"
+fname = "tsx_from_2018_1_11.json"
+fname=None
+if chk_arg("json") is not None:
+        fname= chk_arg("json")
+
+with open(fname, 'r') as f:
 	data = json.load(f)
 
 top = {}
@@ -21,7 +29,7 @@ for a, b in data.iteritems():
     for c, d in top.iteritems():
       if d < profit:
         del tmp_top[c]
-        tmp_top[a] = round(profit)
+        tmp_top[a] = [avg, round(profit)]
         break
     top = cp(tmp_top)
     
@@ -31,5 +39,5 @@ for a, b in top.iteritems():
   print a, data[a]
         
         
-with open('tsx_best.json', 'w') as f:
-	json.dump(top, f) 
+with open('filtered_%s'%fname, 'w') as f:
+	json.dump(top, f, indent=4) 
