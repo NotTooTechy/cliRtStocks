@@ -31,7 +31,6 @@ for a, b in data.iteritems():
         del tmp_top[c]
         tmp_top[a] = [avg, round(profit)]
         break
-    top = cp(tmp_top)
     
 #print top
 

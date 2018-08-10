@@ -46,8 +46,18 @@ def main(list_symb):
 			symbols_list_str+=symb 
 			symbols_list_str+=','
 	symbols_list_str=symbols_list_str.strip(',')
+	print '-'*30
+	content=(link%symbols_list_str)
+	print content
+	print '-'*30
 	content=urllib2.urlopen(link%symbols_list_str).read()
+	print '-'*30
+	print content
+	print '-'*30
 	content = content.strip('?').strip(';').strip('(').strip(')')
+	print '*'*30
+	print content
+	print '*'*30
 	x = json.loads(content)
 	quotes = {}
 	tab_quotes = {}

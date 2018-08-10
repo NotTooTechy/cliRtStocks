@@ -200,7 +200,7 @@ def main(symbols):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) <2:
-        sybls=['tsx', 'acb', 'pd', 'cpg', 'obe', 'bb', 'plc', 'sev', 'et', 'pyr', 'tnt.un', 'msft:us']
+        sybls=['tsx', 'jtr','acb', 'pd', 'cpg', 'obe', 'bb', 'bbd.b', 'sev', 'et', 'pyr',  'msft:us', 'hou', 'cve', 'meg']
         #sybls=['cxv', 'pyr', 'et']
         main(sybls)
     elif sys.argv[1] == 'gold':
@@ -211,7 +211,7 @@ if __name__ == '__main__':
         inv.fetch_crude()
         print '%8s'%inv.lastprice(),
     else:
-        sybls=['tnt.un', 'iip.un', 'srv.un', 'mfc']
+        sybls=['tnt.un', 'iip.un', 'srv.un', 'mfc', 'hwo']
         main(sybls)
 
 
