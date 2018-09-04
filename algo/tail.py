@@ -43,6 +43,7 @@ for ticker, short in data.iteritems():
 		sshort = short[0]
 	else:
 		sshort = short
+	print 
 	print "-"*80
 	print gout(cmd%(ticker, sshort, lines))
 

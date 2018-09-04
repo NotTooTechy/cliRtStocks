@@ -2,10 +2,11 @@ import sys
 import datetime
 
 START_DATE=datetime.datetime(2018, 1, 16)
+#START_DATE=datetime.datetime(2016, 4, 16)
 END_DATE=datetime.datetime(2019, 10, 10)
 END_DATE=datetime.datetime.now()
 
-START_DATE=datetime.datetime(2015, 1, 19)
+#START_DATE=datetime.datetime(2015, 1, 19)
 #START_DATE=datetime.datetime(2018, 7, 6)
 #END_DATE=datetime.datetime(2018, 1, 1)
 def chk_arg(argument):

@@ -38,7 +38,7 @@ elif 'tsx' in sys.argv:
 		stocks = data.keys()
 else:
 	stocks = ['hou.to', 'acb.to', 'bb.to', 'cpg.to', 'pd.to', 'obe.to', 'meg.to', 'bbd-b.to', 
-			'aapl', 'et.to', 'jtr.v', 'pyr.v', 'cve.to', 'gbtc', 'vff.to', 'dol.to', 'vle.to']
+			'aapl', 'et.to', 'jtr.v', 'pyr.v', 'cve.to', 'gbtc', 'vff.to', 'dol.to', 'vle.to', 'th.to']
 	#stocks = ['et.to', 'sev.to', 'pyr.v', 'obe.to', 'bb.to', 'jtr.v', 'hwo.to']
 #Estocks = ['bb.to']
 #stocks = ['ge']
@@ -59,7 +59,7 @@ for ticker in stocks:
 	max_capital = -9999.0
 	stock = mvg.sma_return(ticker)
 	stock.INITIAL_CAPITAL = 5000.0
-	stock.INITIAL_CAPITAL = 17000.0
+	#stock.INITIAL_CAPITAL = 17000.0
 	#now = datetime.datetime.now()
 	stock.start = BEGIN
 	stock.end = END
