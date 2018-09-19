@@ -213,6 +213,9 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'mutual':
         sybls=['xsp', 'tdb886', 'lon262', 'tdb3091', 'xiu']
         main(sybls)
+    elif sys.argv[1] == 'risk':
+        sybls=['hive']
+        main(sybls)
     else:
         sybls=['tnt.un', 'iip.un', 'srv.un', 'mfc', 'hwo', 'plc']
         main(sybls)

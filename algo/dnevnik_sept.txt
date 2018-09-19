@@ -1,0 +1,4 @@
+2018-09-18  7.26      7.063     7.088           BUY at 7.260            Enter capital 32583.420 	MEG.TO
+2018-09-17  0.43      0.427     0.419           BUY at 0.430            Enter capital 15748.560 	PYR.V
+
+

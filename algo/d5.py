@@ -17,11 +17,11 @@ from __init__ import START_DATE, END_DATE
 #INITIAL_CAPITAL = 5000.0
 STEP_BUY_THERESHOLD =  -1
 STEP_SELL_THRESHOLD = 6
-#STEP_SELL_THRESHOLD = 1
+#STEP_SELL_THRESHOLD = 2
 
 short_window = 20
 long_window = 50
-long_window = 10
+long_window =1 
 
 fprint = json.loads(os.environ.get('fprint','false').lower())
 
@@ -45,10 +45,12 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	signals['close'] = instr['Close'].rolling(window=1, min_periods=1, center=False).mean()
 	signals['short_mavg'] = instr['Close'].rolling(window=short_window, min_periods=1, center=False).mean()
 	signals['short_max_avg'] = instr['Close'].rolling(window=short_window, min_periods=1, center=False).max()
-	signals['long_mavg'] = instr['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
+	#signals['long_mavg'] = instr['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
+	signals['long_mavg'] = instr['Close'].rolling(window=5, min_periods=1, center=False).mean()
 	signals['signal'][short_window:] = np.where(signals['short_mavg'][short_window:]
 	                                            > signals['long_mavg'][short_window:], 1.0, 0.0)
 	size = len(signals['close'])
+	print short_window, long_window
 	if fprint:
 		print
 		print 'Date\tClose\tShort_avg\tLong_avg'
@@ -60,7 +62,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 		max_avg= round(signals['short_max_avg'][i], 3)
 		if fprint:
 			#print date.date(), close, short_mavg, max_avg, #long_mavg,
-			print '%-12s%-10s%-10s%-10s'%(date.date(), close, short_mavg, max_avg), #long_mavg,
+			print '%-12s%-10s%-10s%-10s'%(date.date(), close, short_mavg, long_mavg), #long_mavg,
 		if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy > step_buy_th:
 			if fprint:
 				print '\tBUY at %.3f'%close, ' \t\tEnter capital %.3f'%capital,
@@ -76,14 +78,14 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 				pass#print '\t\tExit capital', capital,
 		elif close < short_mavg and i > 30 and sell_flag and step_sell>step_sell_th:
 			if fprint:
-				print '\tSELL at', close, '\t\tEnter capital', capital,'\t\t',
+				print '\tSELL at %.3f'%close, '\t\tEnter capital %.3f'%capital,'\t\t',
 			buy_flag = True
 			sell_flag = False
 			step_sell=0
 			step_buy=0
 			capital += buy_size*close-10
 			if fprint:
-				print '\t\tExit capital', capital,'\t\t', capital - captial_at_buy_time,
+				print '\t\tExit capital %-.3f'%capital,'\t\t %-.3f'%(capital - captial_at_buy_time),
 				if  capital - captial_at_buy_time >0:
 					print "\t\t", "GAIN",
 				else:
