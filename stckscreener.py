@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import time
+import requests
 import urllib2
 import json
 from string import ascii_lowercase
@@ -66,11 +68,17 @@ class stck_screener:
         self.divident_web=self.baseweb%('dividents', share)
 
     def fetch_web(self):
+	#data = requests.get(self.quote_web).text
+        #self.soup = BeautifulSoup(data).read()
         self.soup = BeautifulSoup(urllib2.urlopen(self.quote_web).read())
 
     def ticker(self):
         self.div = self.soup('div', {'class' : 'quote-ticker tickerLarge'})
-        return self.div[0].string
+	try:
+        	return self.div[0].string
+	except:
+		print self.div
+		return None
 
     def name(self):
         self.div = self.soup('div', {'class' : 'quote-name'})
@@ -184,40 +192,48 @@ def main(symbols):
     liso=[]
     for symbol in symbols:
         stck=stck_screener(symbol) 
-        stck.fetch_web()
-        print '%8s'%stck.ticker(),
-        #print stck.quote_web
-        print '%10s'%stck.price_quote(),
-        print '%10s'%stck.price_change()[1],
-        print '%10s'%stck.volume(),
-        print '%8s%8s'%stck.daylow_high(),
-        print '%8s%8s'%stck.weeklow_high(),
-        print '\t',stck.name()
-
+	stck.fetch_web()
+	print '%8s'%stck.ticker(),
+	#print stck.quote_web
+	print '%10s'%stck.price_quote(),
+	print '%10s'%stck.price_change()[1],
+	print '%10s'%stck.volume(),
+	print '%8s%8s'%stck.daylow_high(),
+	print '%8s%8s'%stck.weeklow_high(),
+	print '\t',stck.name()
 
     
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) <2:
-        sybls=['tsx', 'jtr','acb', 'pd', 'cpg', 'obe', 'bb', 'bbd.b', 'sev', 'et', 'pyr',  'msft:us', 'hou', 'cve', 'meg', 'hwo', 'th', 'pho']
+        sybls=['tsx', '^SPX:US', 'jtr','acb', 'pd', 'cpg', 'obe', 'bb', 'bbd.b', 'sev', 'et', 'pyr',  'msft:us', 'hou', 'cve', 'meg', 'hwo', 'th', 'pho', 'dol', 'bte', 'scr']
         #sybls=['cxv', 'pyr', 'et']
         main(sybls)
     elif sys.argv[1] == 'gold':
-        sybls=['mto', 'txg', 'bgm', 'abr', 'hou', 'hcg']
+        sybls=['txg', 'bgm', 'tgl', 'hcg']
         main(sybls)
     elif sys.argv[1] == 'oil':
 	inv=investing()
         inv.fetch_crude()
         print '%8s'%inv.lastprice(),
-    elif sys.argv[1] == 'mutual':
-        sybls=['xsp', 'tdb886', 'lon262', 'tdb3091', 'xiu']
+    elif sys.argv[1] == 'markets':
+        sybls=['tsx', '^SPx:US', '^COMPX:US', '^DJI:US', '^NYSE:US']
         main(sybls)
-    elif sys.argv[1] == 'risk':
-        sybls=['hive']
+    elif sys.argv[1] == 'september':
+        sybls=['noa', 'blu', 'rnx', 'cqe', 'efr', 'ajx', 'gxe', 'pts', 'lam', 'meg', 'nsu', 've', 'rfp', 'fsy', 'aim', 'rvx', 'sgy']
+        main(sybls)
+    elif sys.argv[1] == 'vazno':
+        sybls=['tsx', 'bte', 'vff', 'pho', 'bbd.b' ,'ge:us']
+        main(sybls)
+    elif sys.argv[1] == 'quick':
+        sybls=['tsx', 'bte']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
+        main(sybls)
+    elif sys.argv[1] == 'tech':
+        sybls=['msft:us', 'aapl:us', 'amzn:us', 'fb:us', 'nflx:us']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
         main(sybls)
     else:
-        sybls=['tnt.un', 'iip.un', 'srv.un', 'mfc', 'hwo', 'plc']
+        sybls=['tnt.un', 'iip.un', 'srv.un', 'mfc', 'hwo', 'plc', 'rfp']
         main(sybls)
 
 

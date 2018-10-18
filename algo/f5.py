@@ -12,7 +12,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from copy import deepcopy as cp
-from __init__ import START_DATE, END_DATE
+from __init__ import START_DATE, END_DATE, RISK_SELL
 
 #INITIAL_CAPITAL = 5000.0
 STEP_BUY_THERESHOLD =  -1
@@ -28,9 +28,11 @@ fprint = json.loads(os.environ.get('fprint','false').lower())
 def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=STEP_BUY_THERESHOLD, step_sell_th=STEP_SELL_THRESHOLD):
 	capital = INITIAL_CAPITAL
 	buy_flag = True
+	buy_price = 0
 	sell_flag = False
 	step_sell = 0
 	step_buy = 0
+	close_max = 0
 	#long_window = short_window
 	instr = pdr.get_data_yahoo(ticker,
 	                          #start=datetime.datetime(2017, 7, 1),
@@ -43,7 +45,6 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	signals = pd.DataFrame(index=instr.index)
 	signals['signal'] = 0.0
 	signals['close'] = instr['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()
-	signals['volume'] = instr['Volume'].rolling(window=1, min_periods=1, center=False).mean()
 	signals['short_mavg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).mean()
 	signals['short_max_avg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).max()
 	#signals['long_mavg'] = instr['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
@@ -58,17 +59,20 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	for i in range(size):
 		date = signals.index[i]
 		close = round(signals['close'][i], 2)
-		volume = signals['volume'][i] 
 		short_mavg= round(signals['short_mavg'][i], 3)
 		long_mavg= round(signals['long_mavg'][i], 3)
 		max_avg= round(signals['short_max_avg'][i], 3)
+		if close > close_max:
+			close_max = close
 		if fprint:
 			#print date.date(), close, short_mavg, max_avg, #long_mavg,
-			print '%-12s%-10s%-10s%-10s%-10s'%(date.date(), close, short_mavg, long_mavg,str(volume)), #long_mavg,
+			print '%-12s%-10s%-10s%-10s'%(date.date(), close, short_mavg, max_avg), #long_mavg,
 		if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy > step_buy_th:
 			if fprint:
 				print '\tBUY at %.3f'%close, ' \t\tEnter capital %.3f'%capital,
 			buy_flag = False
+			buy_price = close
+			close_max = close
 			sell_flag = True
 			buy_size = int(capital/close)
 			captial_at_buy_time = capital
@@ -78,13 +82,16 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 			#print date, 'Buying at %s, size: %s'%(close, buy_size),
 			if fprint:
 				pass#print '\t\tExit capital', capital,
-		elif close < short_mavg and i > 30 and sell_flag and step_sell>step_sell_th:
+		elif close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy <= step_buy_th:
+			step_buy+=1
+		elif (close < short_mavg and i > 30 and sell_flag and step_sell>step_sell_th) or (buy_price>0 and close<max_avg*RISK_SELL) :
 			if fprint:
 				print '\tSELL at %.3f'%close, '\t\tEnter capital %.3f'%capital,'\t\t',
 			buy_flag = True
 			sell_flag = False
 			step_sell=0
 			step_buy=0
+			buy_price =0 
 			capital += buy_size*close-10
 			if fprint:
 				print '\t\tExit capital %-.3f'%capital,'\t\t %-.3f'%(capital - captial_at_buy_time),
@@ -97,7 +104,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 		elif 1*close < short_mavg and i > 30 and sell_flag:
 			step_sell+=1
 		else:
-			step_buy+=1
+			#step_buy+=1
 			pass#step_sell = 0
 		if fprint:
 			print step_sell

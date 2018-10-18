@@ -43,7 +43,6 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	signals = pd.DataFrame(index=instr.index)
 	signals['signal'] = 0.0
 	signals['close'] = instr['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()
-	signals['volume'] = instr['Volume'].rolling(window=1, min_periods=1, center=False).mean()
 	signals['short_mavg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).mean()
 	signals['short_max_avg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).max()
 	#signals['long_mavg'] = instr['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
@@ -58,13 +57,12 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	for i in range(size):
 		date = signals.index[i]
 		close = round(signals['close'][i], 2)
-		volume = signals['volume'][i] 
 		short_mavg= round(signals['short_mavg'][i], 3)
 		long_mavg= round(signals['long_mavg'][i], 3)
 		max_avg= round(signals['short_max_avg'][i], 3)
 		if fprint:
 			#print date.date(), close, short_mavg, max_avg, #long_mavg,
-			print '%-12s%-10s%-10s%-10s%-10s'%(date.date(), close, short_mavg, long_mavg,str(volume)), #long_mavg,
+			print '%-12s%-10s%-10s%-10s'%(date.date(), close, short_mavg, long_mavg), #long_mavg,
 		if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy > step_buy_th:
 			if fprint:
 				print '\tBUY at %.3f'%close, ' \t\tEnter capital %.3f'%capital,

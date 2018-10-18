@@ -38,7 +38,7 @@ with open("tsx_best.json", 'r') as f:
 '''
 
 cmd = "python d5.py %s short=%s debug | tail -n %d"
-for ticker, short in data.iteritems():
+for ticker, short in sorted(data.iteritems()):
 	if type(short) is list:
 		sshort = short[0]
 	else:

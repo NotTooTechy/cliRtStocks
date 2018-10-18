@@ -15,7 +15,7 @@ with open(fname, 'r') as f:
 
 top = {}
 loops =0
-for a, b in data.iteritems():
+for a, b in sorted(data.iteritems()):
   loops+=1
   tmp_top = {}
   ticker = a
@@ -23,15 +23,15 @@ for a, b in data.iteritems():
   profit = b[1]
   lentop = len(top.keys())
   if lentop < 20:
-     top[ticker] = round(profit)
+     top[a] = 3500
   else:
     tmp_top = cp(top)
-    for c, d in top.iteritems():
+    for c, d in sorted(top.iteritems()):
       if d < profit:
         del tmp_top[c]
         tmp_top[a] = [avg, round(profit)]
         break
-    
+    top = cp(tmp_top)
 #print top
 
 for a, b in top.iteritems():

@@ -29,6 +29,7 @@ class sma_return:
 		self.step_sell = 0 
 		self.step_buy = 0
 		self.buy_flag = True
+		self.buy_price = 0
 		self.sell_fleg = False
 		self.start = datetime.datetime(2017, 1, 1)
 		self.end = datetime.datetime(2019, 1, 1)
@@ -83,8 +84,9 @@ class sma_return:
 				print date.date(), close, short_mavg, long_mavg,
 			if close > short_mavg and close > long_mavg and i > 30 and self.buy_flag and self.capital > 500 and self.step_buy > self.step_buy_th:
 				if self.fprint:
-					print self.step_buy, '\tBUY at %.3f'%close, ' \tEnter capital %.3f'%self.capital,
+					print self.step_buy, '\tBUY at %.3f'%close, ' \t\tEnter capital %.3f'%self.capital,
 				self.buy_flag = False
+				self.buy_price = close
 				self.sell_fleg = True
 				buy_size = int(self.capital/close)
 				captial_at_buy_time = self.capital
@@ -94,19 +96,20 @@ class sma_return:
 				#print date, 'Buying at %s, size: %s'%(close, buy_size),
 				if self.fprint:
 					pass#print '\t\tExit capital', capital,
-			elif close < short_mavg and i > 30 and self.sell_fleg and self.step_sell>self.step_sell_th:
+			elif (close < short_mavg and i > 30 and self.sell_fleg and self.step_sell>self.step_sell_th) or  (self.buy_price > 0 and close <0.94*self.buy_price):
 				if self.fprint:
-					print '\tSELL at', close, '\tEnter capital', capital,'\t',
+					print '\tSELL at', close, '\t\tEnter capital', capital,'\t\t',
 				self.buy_flag = True
+				self.buy_price = 0
 				self.sell_fleg = False
 				self.step_sell=0
 				self.capital += buy_size*close-10
 				if self.fprint:
-					print '\tExit capital', self.capital,'\t', self.capital - captial_at_buy_time,
+					print '\t\tExit capital', self.capital,'\t\t', self.capital - captial_at_buy_time,
 					if  self.capital - captial_at_buy_time >0:
-						print "\t", "GAIN",
+						print "\t\t", "GAIN",
 					else:
-						print "\t", "LOSS",
+						print "\t\t", "LOSS",
 			elif close > short_mavg and close > long_mavg and i > 30 and self.buy_flag and self.capital > 500:
 				self.step_sell=0
 				self.step_buy+=1

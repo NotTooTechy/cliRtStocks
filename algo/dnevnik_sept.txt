@@ -1,4 +1,16 @@
-2018-09-18  7.26      7.063     7.088           BUY at 7.260            Enter capital 32583.420 	MEG.TO
-2018-09-17  0.43      0.427     0.419           BUY at 0.430            Enter capital 15748.560 	PYR.V
+2018-09-18  7.26      7.063     7.088           BUY at 7.260            Enter capital 32583.420 	MEG.TO 	--now-- : 	11.0
+2018-09-17  0.43      0.427     0.419           BUY at 0.430            Enter capital 15748.560 	PYR.V			0.455	
+2018-09-27  1.8       1.782     1.748           BUY at 1.800            Enter capital 21609.140 0	PHO.TO			1.78
 
+2018-09-21  8.00      7.941     7.882           BUY at 8.060            Enter capital 13582.830 0	CPG.TO			8.43
+2018-09-21  43.05     42.424    42.44           BUY at 43.050           Enter capital 14998.470 0 	DOL.TO  		40.75
+2018-09-21  8.47      8.303     8.174           BUY at 8.470            Enter capital 13149.880 0       GBTC    		8.00
 
+2018-10-10  3.63      3.593     3.606           BUY at 3.630  
+
+===============================
+- Don't buy on fallout
+- Ne zuri budalo
+	(Zapo ko sivonja na BTE, koji je pao sa 3.72 na 3.5 i onda malo plesao.Market je bio 1.7% down. Navalio
+		frajer i kupio na 3.53. Poslije market je isao gore dole da bi se opet razbio. Sad je BTE 3.4.
+	(Isto je napravljeno sa GE, (13.6, sad je palo na 13.3)

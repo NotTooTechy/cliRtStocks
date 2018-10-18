@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import mvg
+import mvg2
 import datetime
 import sys
 import json
@@ -57,7 +57,7 @@ for ticker in stocks:
 	max_window = -1.0
 	max_profit = -9999.0
 	max_capital = -9999.0
-	stock = mvg.sma_return(ticker)
+	stock = mvg2.sma_return(ticker)
 	stock.INITIAL_CAPITAL = 5000.0
 	#stock.INITIAL_CAPITAL = 17000.0
 	#now = datetime.datetime.now()

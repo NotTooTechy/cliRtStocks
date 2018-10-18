@@ -24,7 +24,7 @@ def hist(symb):
 		content = json.loads(content)
 	except:
 		pass
-	return content
+	return content['history']['eoddata']
 
 	
 def oil():
@@ -95,7 +95,16 @@ if __name__ == "__main__":
 	elif list_symb[1] =="comm":
 		commodities(sleeptime=sys.argv[2])
 	elif list_symb[1] =="astock":
-		print hist(sys.argv[2])
+		ret = hist(sys.argv[2])
+		c = []
+		for a, b in ret.iteritems():
+			if 'unadj' not in a:
+				print "\t%s"% a, 
+				c.append(a)
+		print
+		for d in c:
+			print "\t%s"%ret[d],
+		print
 	else:
 		print data[list_symb[1]]
 		main(data[list_symb[1]])
