@@ -2,8 +2,10 @@ import sys
 import datetime
 
 START_DATE=datetime.datetime(2018, 1, 16)
-START_DATE=datetime.datetime(2017, 9, 16)
+START_DATE=datetime.datetime(2016, 9, 16)
+#START_DATE=datetime.datetime(2011, 1, 16)
 END_DATE=datetime.datetime.now()
+#END_DATE=datetime.datetime(2018, 11, 25)
 
 api_key="ynfGhK3IYmAYvAyj9L2t"
 
@@ -11,11 +13,9 @@ api_key="ynfGhK3IYmAYvAyj9L2t"
 #START_DATE=datetime.datetime(2015, 1, 19)
 #START_DATE=datetime.datetime(2018, 7, 6)
 
-RISK_SELL = 0.88
 RISK_SELL = 0.96
-RISK_SELL = 0.88
 RISK_SELL = 0.9999
-RISK_SELL = 0.94
+RISK_SELL = 0.96
 
 def chk_arg(argument):
         if any(argument in s for s in sys.argv):

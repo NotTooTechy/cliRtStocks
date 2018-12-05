@@ -4,8 +4,6 @@ from copy import deepcopy as cp
 from __init__ import chk_arg
 
 
-fname = "tsx_scan.json"
-fname = "tsx_from_2018_1_11.json"
 fname=None
 if chk_arg("json") is not None:
         fname= chk_arg("json")
@@ -23,7 +21,7 @@ for a, b in sorted(data.iteritems()):
   profit = b[1]
   lentop = len(top.keys())
   if lentop < 20:
-     top[a] = 3500
+     top[a] = 590
   else:
     tmp_top = cp(top)
     for c, d in sorted(top.iteritems()):

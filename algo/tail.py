@@ -37,15 +37,27 @@ with open("tsx_best.json", 'r') as f:
 	data = json.load(f)
 '''
 
-cmd = "python d5.py %s short=%s debug | tail -n %d"
+cmd = "python d5.py %s short=%s debug capital=5000| tail -n %d"
+profits = []
 for ticker, short in sorted(data.iteritems()):
 	if type(short) is list:
 		sshort = short[0]
 	else:
 		sshort = short
-	print 
 	print "-"*80
-	print gout(cmd%(ticker, sshort, lines))
+	out = gout(cmd%(ticker, sshort, lines))
+	print out
+	if 'profit:' in out:
+		profits.append(out.split('profit:')[1].strip())
+
+total = 0
+for aprofit in profits:
+	try:
+		tmp = aprofit.replace(',', '')
+	except:
+		tmp = aprofit
+	total += float(tmp)
 
 
-
+print "Total profit:", total
+	

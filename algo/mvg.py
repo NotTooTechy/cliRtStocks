@@ -49,19 +49,22 @@ class sma_return:
 	
 	def get_data(self, fresh=True):
 		fname = 'data/%s.csv'%self.ticker.lower()
-		try:
-			instr = pdr.get_data_yahoo(self.ticker, start=self.start, end=self.end)
-		except:
-			return None, None
+		if not os.path.exists(fname):
+			try:
+				instr = pdr.get_data_yahoo(self.ticker, start=self.start, end=self.end)
+				instr.to_csv(fname)
+			except:
+				return None, None
 			
-		instr.to_csv(fname)
 		df = pd.read_csv(fname, header=0, index_col='Date', parse_dates=True)
-		return instr, df
+		df = df[(df.index > self.start) & (df.index <= self.end)]
+		#return instr, df
+		return df
 
-	def get_signals(self, instr, df):
+	def get_signals(self, instr):
 		self.capital = self.INITIAL_CAPITAL
 		self.long_window = self.short_window
-		#instr, df = self.get_data()
+		instr = self.get_data()
 		self.signals = pd.DataFrame(index=instr.index)
 		self.signals['signal'] = 0.0
 		self.signals['close'] = instr['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()

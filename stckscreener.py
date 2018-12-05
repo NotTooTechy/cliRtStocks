@@ -11,6 +11,9 @@ start_web="http://www.tmxmoney.com/TMX/HttpController?GetPage=ListedCompanyDirec
 baseweb="http://www.tmxmoney.com/TMX/HttpController?"
 getpage="GetPage=ListedCompanyDirectory&Page=%s"
 search="&SearchIsMarket=Yes&Market=T&Language=en&SearchCriteria=Name&SearchType=StartWith&SearchKeyword=%s&SUBMIT=Search"
+S_P_500 = "https://m.ca.investing.com/indices/us-spx-500-futures"
+NASDAQ = "https://m.ca.investing.com/indices/nq-100-futures"
+DOW= "https://m.ca.investing.com/indices/us-30"
 
 def link_search_start_char(acharacter, pg=1):
     webb = baseweb + getpage%str(pg) + search%acharacter
@@ -34,7 +37,55 @@ def collect_stocks_from_one_starting_letter():
             #all_links = links.copy()
             all_links.update(links)
     return all_links
-        
+
+class markets:
+    def __init__(self):
+	self.nmarkets = ["S_P_500", "NASDAQ", "DOW", "OIL"]
+        self.oil="https://m.ca.investing.com/commodities/crude-oil"
+
+    def find_oil_div(self):
+	self.sp500= BeautifulSoup(urllib2.urlopen(S_P_500, timeout=3).read())
+	self.nasdaq= BeautifulSoup(urllib2.urlopen(NASDAQ, timeout=3).read())
+	self.dow= BeautifulSoup(urllib2.urlopen(DOW, timeout=3).read())
+	self.oil= BeautifulSoup(urllib2.urlopen(self.oil, timeout=3).read())
+	self.markets = [self.sp500, self.nasdaq, self.dow, self.oil]
+	m = []
+	for i, market in enumerate(self.markets):
+		print self.nmarkets[i],"\t",
+		currval= market.findAll("span", {"class": "lastInst pid-8849-last"})
+		changes= market.findAll("span", {"class": "quotesChange"})
+		for loop in currval:
+			m.append(loop.text)
+			print loop.text,
+		for loop in changes:
+			m.append(loop.text)
+			print "\t", loop.text,
+		print
+	return m
+
+class oil:        
+    def __init__(self):
+        self.baseweb="https://markets.businessinsider.com/commodities/oil-price?type=wti"
+        self.baseweb="https://m.ca.investing.com/commodities/crude-oil"
+
+    def fetch_web(self):
+	#data = requests.get(self.quote_web).text
+        #self.soup = BeautifulSoup(data).read()
+	pass
+
+    def find_oil_div(self):
+	#  <div data-field="Mid" data-item="Y0306000000WTI-USD" a
+	self.soup = BeautifulSoup(urllib2.urlopen(self.baseweb, timeout=3).read())
+	#mydivs = self.soup.findAll("div", {"data-item": "Y0306000000WTI-USD"})
+	currval= self.soup.findAll("span", {"class": "lastInst pid-8849-last"})
+	changes= self.soup.findAll("span", {"class": "quotesChange"})
+	#print mydivs
+	m = []
+	for loop in currval:
+		m.append(loop.text)
+	for loop in changes:
+		m.append(loop.text)
+	return m
     
 
 def collect_all_stck(web):
@@ -207,13 +258,13 @@ def main(symbols):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) <2:
-        sybls=['tsx', '^SPX:US', 'jtr','acb', 'pd', 'cpg', 'obe', 'bb', 'bbd.b', 'sev', 'et', 'pyr',  'msft:us', 'hou', 'cve', 'meg', 'hwo', 'th', 'pho', 'dol', 'bte', 'scr']
+        sybls=['tsx', '^SPX:US', 'jtr','acb', 'pd', 'cpg', 'obe', 'bb', 'bbd.b', 'sev', 'et', 'pyr',  'msft:us', 'hou', 'hod', 'cve', 'meg', 'hwo', 'th', 'pho', 'vff', 'bte', 'scr']
         #sybls=['cxv', 'pyr', 'et']
         main(sybls)
     elif sys.argv[1] == 'gold':
         sybls=['txg', 'bgm', 'tgl', 'hcg']
         main(sybls)
-    elif sys.argv[1] == 'oil':
+    elif sys.argv[1] == 'woil':
 	inv=investing()
         inv.fetch_crude()
         print '%8s'%inv.lastprice(),
@@ -221,17 +272,30 @@ if __name__ == '__main__':
         sybls=['tsx', '^SPx:US', '^COMPX:US', '^DJI:US', '^NYSE:US']
         main(sybls)
     elif sys.argv[1] == 'september':
-        sybls=['noa', 'blu', 'rnx', 'cqe', 'efr', 'ajx', 'gxe', 'pts', 'lam', 'meg', 'nsu', 've', 'rfp', 'fsy', 'aim', 'rvx', 'sgy']
+        sybls=['tve', 'blu', 'rnx', 'cqe', 'efr', 'ajx', 'gxe', 'pts', 'lam', 'meg', 'nsu', 've', 'rfp', 'fsy', 'aim', 'rvx', 'sgy', 'tgl']
         main(sybls)
     elif sys.argv[1] == 'vazno':
-        sybls=['tsx', 'bte', 'vff', 'pho', 'bbd.b' ,'ge:us']
+        #sybls=['tsx', 'hod', 'hou', 'bbd.b']
+        sybls=['tsx', 'iip.un','bbd.b', 'hou','hod']
         main(sybls)
     elif sys.argv[1] == 'quick':
         sybls=['tsx', 'bte']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
         main(sybls)
     elif sys.argv[1] == 'tech':
-        sybls=['msft:us', 'aapl:us', 'amzn:us', 'fb:us', 'nflx:us']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
+        sybls=['msft:us', 'aapl:us', 'amzn:us', 'fb:us', 'nflx:us', 'csco:us']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
         main(sybls)
+    elif sys.argv[1] == 'us':
+        sybls=['robo:us', 'xt:us', 'amzn:us', 'fb:us', 'nflx:us', 'csco:us']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
+        main(sybls)
+    elif sys.argv[1] == 'oil':
+        wtioil = oil()
+        wtioil.fetch_web()
+	print wtioil.find_oil_div()
+    elif sys.argv[1] == 'usmarkets':
+        wtioil = markets()
+	wtioil.find_oil_div()
+	
+	
     else:
         sybls=['tnt.un', 'iip.un', 'srv.un', 'mfc', 'hwo', 'plc', 'rfp']
         main(sybls)

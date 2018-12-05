@@ -66,15 +66,15 @@ for ticker in stocks:
 	#stock.end = END
 	#stock.step_buy_th = 2
 	stock.step_sell_th = SELL_THRESHOLD
-	instrument, df = stock.get_data()
+	instrument = stock.get_data()
 	if instrument is None:
 		continue
 	print "%-20s\t"%stock.ticker, stock.start.date(), "\t", stock.end.date(),"\t",
-	for window in range(2, 60):
+	for window in range(2, 160):
 		stock.reset()
 		stock.short_window = window
 		try:
-			stock.get_signals(instrument, df)
+			stock.get_signals(instrument)
 		except:
 			print None
 			break

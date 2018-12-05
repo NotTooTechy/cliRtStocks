@@ -17,7 +17,7 @@ from __init__ import START_DATE, END_DATE
 #INITIAL_CAPITAL = 5000.0
 STEP_BUY_THERESHOLD =  -1
 STEP_SELL_THRESHOLD = 6
-#STEP_SELL_THRESHOLD = 2
+#STEP_SELL_THRESHOLD = 1
 
 short_window = 20
 long_window = 50
@@ -32,37 +32,40 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	step_sell = 0
 	step_buy = 0
 	#long_window = short_window
-	instr = pdr.get_data_yahoo(ticker,
+	fname = 'data/%s.csv'%ticker
+	if not os.path.exists(fname):
+	  instr = pdr.get_data_yahoo(ticker,
 	                          #start=datetime.datetime(2017, 7, 1),
 	                          start=START_DATE,
 	                          end=END_DATE)
-	fname = 'data/%s.csv'%ticker
-	if not os.path.exists(fname):
 	  instr.to_csv(fname)
 	df = pd.read_csv(fname, header=0, index_col='Date', parse_dates=True)
-	signals = pd.DataFrame(index=instr.index)
+	df = df[(df.index > START_DATE) & (df.index <= END_DATE)]
+	signals = pd.DataFrame(index=df.index)
 	signals['signal'] = 0.0
-	signals['close'] = instr['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()
-	signals['short_mavg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).mean()
-	signals['short_max_avg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).max()
+	signals['close'] = df['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()
+	signals['volume'] = df['Volume'].rolling(window=1, min_periods=1, center=False).mean()
+	signals['short_mavg'] = df['Adj Close'].rolling(window=short_window, min_periods=1, center=False).mean()
+	signals['short_max_avg'] = df['Adj Close'].rolling(window=short_window, min_periods=1, center=False).max()
 	#signals['long_mavg'] = instr['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
-	signals['long_mavg'] = instr['Adj Close'].rolling(window=5, min_periods=1, center=False).mean()
+	signals['long_mavg'] = df['Adj Close'].rolling(window=5, min_periods=1, center=False).mean()
 	signals['signal'][short_window:] = np.where(signals['short_mavg'][short_window:]
 	                                            > signals['long_mavg'][short_window:], 1.0, 0.0)
 	size = len(signals['close'])
-	print short_window, long_window
 	if fprint:
 		print
 		print 'Date\tClose\tShort_avg\tLong_avg'
 	for i in range(size):
 		date = signals.index[i]
-		close = round(signals['close'][i], 2)
+		close = round(signals['close'][i], 3)
+		volume= int(signals['volume'][i])
 		short_mavg= round(signals['short_mavg'][i], 3)
 		long_mavg= round(signals['long_mavg'][i], 3)
 		max_avg= round(signals['short_max_avg'][i], 3)
 		if fprint:
+			diff = round(close - short_mavg, 2)
 			#print date.date(), close, short_mavg, max_avg, #long_mavg,
-			print '%-12s%-10s%-10s%-10s'%(date.date(), close, short_mavg, long_mavg), #long_mavg,
+			print '%-12s%-10s%-10s%-10s%10s'%(date.date(), close, short_mavg, diff, "{:,}".format(volume)), #long_mavg,
 		if close > short_mavg and close > long_mavg and i > 30 and buy_flag and capital > 500 and step_buy > step_buy_th:
 			if fprint:
 				print '\tBUY at %.3f'%close, ' \tEnter capital %.3f'%capital,

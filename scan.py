@@ -4,6 +4,7 @@ import urllib2
 import json
 import datetime
 import time
+from stckscreener import oil
 from commands import getoutput
 print "\033[0;0m"
 # 
@@ -27,16 +28,25 @@ def hist(symb):
 	return content['history']['eoddata']
 
 	
-def oil():
+def woil():
 	content=json.dumps(urllib2.urlopen(_commodities).read())
 	x = json.loads(content)
 	lista = x.split(";")
 	return lista[31][43:][:5].strip(), lista[32][52:][1:5].strip() + "%"
 
 def commodities(comm="oil", sleeptime=10):
-	for _ in range(7200):
-		print oil()
-		time.sleep(int(sleeptime)),
+	tmp='x'
+	for _ in range(17200):
+		wtioil = oil()
+        	wtioil.fetch_web()
+		today = datetime.datetime.today()
+        	ret =  wtioil.find_oil_div() 
+		if ret[0] !=  tmp:
+			print ret, today
+			tmp = ret[0]
+		
+		#print oil()
+		time.sleep(int(sleeptime))
 		
 	
 def main(list_symb):
