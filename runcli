@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd cliRtStocks/
+if [ "$1" = "tsx" ]
+then
+	./tmx_history.py tsx
+else
+	./scan.py $1 $2
+fi
+
+
