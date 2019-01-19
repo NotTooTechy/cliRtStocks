@@ -51,15 +51,15 @@ class markets:
 	self.markets = [self.sp500, self.nasdaq, self.dow, self.oil]
 	m = []
 	for i, market in enumerate(self.markets):
-		print self.nmarkets[i],"\t",
+		print "%10s"%self.nmarkets[i],
 		currval= market.findAll("span", {"class": "lastInst pid-8849-last"})
 		changes= market.findAll("span", {"class": "quotesChange"})
 		for loop in currval:
 			m.append(loop.text)
-			print loop.text,
+			print "%20s"%loop.text,
 		for loop in changes:
 			m.append(loop.text)
-			print "\t", loop.text,
+			print "%20s"%loop.text,
 		print
 	return m
 
@@ -69,8 +69,6 @@ class oil:
         self.baseweb="https://m.ca.investing.com/commodities/crude-oil"
 
     def fetch_web(self):
-	#data = requests.get(self.quote_web).text
-        #self.soup = BeautifulSoup(data).read()
 	pass
 
     def find_oil_div(self):
@@ -276,7 +274,10 @@ if __name__ == '__main__':
         main(sybls)
     elif sys.argv[1] == 'vazno':
         #sybls=['tsx', 'hod', 'hou', 'bbd.b']
-        sybls=['tsx', 'iip.un','bbd.b', 'hou','hod']
+        sybls=['tsx', 'iip.un','bbd.b', 'pyr', 'hou','hod']
+        main(sybls)
+    elif sys.argv[1] == 'etf':
+        sybls=['hix', 'hsu','hxu', 'QQQ:US', 'spy:us']
         main(sybls)
     elif sys.argv[1] == 'quick':
         sybls=['tsx', 'bte']#, 'pyr', 'pho', 'bbd.b' ,'ge:us']
@@ -289,8 +290,9 @@ if __name__ == '__main__':
         main(sybls)
     elif sys.argv[1] == 'oil':
         wtioil = oil()
-        wtioil.fetch_web()
-	print wtioil.find_oil_div()
+        #wtioil.fetch_web()
+	result = wtioil.find_oil_div()
+	print result
     elif sys.argv[1] == 'usmarkets':
         wtioil = markets()
 	wtioil.find_oil_div()

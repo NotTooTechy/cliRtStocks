@@ -4,6 +4,7 @@ import urllib2
 import json
 import datetime
 import time
+import collections as clt
 from stckscreener import oil
 from commands import getoutput
 print "\033[0;0m"
@@ -36,13 +37,34 @@ def woil():
 
 def commodities(comm="oil", sleeptime=10):
 	tmp='x'
+	suma = 0
+	val_arr = clt.deque(maxlen=20)
+	maxval = 0
+	minval = 9999
 	for _ in range(17200):
 		wtioil = oil()
         	wtioil.fetch_web()
 		today = datetime.datetime.today()
         	ret =  wtioil.find_oil_div() 
+		curr_price = float(ret[0])
 		if ret[0] !=  tmp:
-			print ret, today
+			val_arr.append(curr_price)
+			suma = sum(val_arr)
+			avg = suma/len(val_arr)
+			if curr_price - avg < 0:
+				trend = "DOWN"
+			elif curr_price - avg ==0:
+				trend = ""
+			else:
+				trend = "UP"
+			print ret, today, " (%.2f, %.2f)"%(avg, curr_price - avg), trend,
+			if curr_price > maxval:
+				maxval = curr_price
+				print "\tNEW_MAX =", maxval,
+			if curr_price < minval:
+				minval = curr_price
+				print "\t\tNEW_MIN =", minval,
+			print
 			tmp = ret[0]
 		
 		#print oil()

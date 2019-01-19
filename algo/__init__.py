@@ -3,7 +3,7 @@ import datetime
 
 START_DATE=datetime.datetime(2018, 1, 16)
 START_DATE=datetime.datetime(2016, 9, 16)
-#START_DATE=datetime.datetime(2011, 1, 16)
+#START_DATE=datetime.datetime(2006, 9, 16)
 END_DATE=datetime.datetime.now()
 #END_DATE=datetime.datetime(2018, 11, 25)
 
