@@ -13,28 +13,23 @@ with open(fname, 'r') as f:
 
 top = {}
 loops =0
-for a, b in sorted(data.iteritems()):
-  loops+=1
-  tmp_top = {}
-  ticker = a
-  avg = b[0]
-  profit = b[1]
-  lentop = len(top.keys())
-  if lentop < 20:
-     top[a] = 590
-  else:
-    tmp_top = cp(top)
-    for c, d in sorted(top.iteritems()):
-      if d < profit:
-        del tmp_top[c]
-        tmp_top[a] = [avg, round(profit)]
-        break
-    top = cp(tmp_top)
-#print top
+for symbol, profit_avg_list in sorted(data.iteritems()):
+    avg = int(profit_avg_list[0])
+    profit = float(profit_avg_list[1])
+    if profit < 1:
+        continue
+    if len(top) < 30:
+        top[symbol] = profit_avg_list
+        continue
+    for tmp_symbol, tmp_profit_avg_list in sorted(top.iteritems()):
+        tmp_avg = int(tmp_profit_avg_list[0])
+        tmp_profit = float(tmp_profit_avg_list[1])
+        if profit > tmp_profit:
+            del top[tmp_symbol]
+            top[symbol] = profit_avg_list
+            break
 
-for a, b in top.iteritems():
-  print a, data[a]
-        
-        
+print json.dumps(top, indent=4, sort_keys=True)        
 with open('filtered_%s'%fname, 'w') as f:
 	json.dump(top, f, indent=4) 
+

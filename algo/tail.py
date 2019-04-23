@@ -40,6 +40,7 @@ with open("tsx_best.json", 'r') as f:
 cmd = "python d5.py %s short=%s debug capital=5000| tail -n %d"
 profits = []
 for ticker, short in sorted(data.iteritems()):
+        gout("rm data/%s.csv"%ticker)
 	if type(short) is list:
 		sshort = short[0]
 	else:

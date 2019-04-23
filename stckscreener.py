@@ -274,7 +274,7 @@ if __name__ == '__main__':
         main(sybls)
     elif sys.argv[1] == 'vazno':
         #sybls=['tsx', 'hod', 'hou', 'bbd.b']
-        sybls=['tsx', 'iip.un','bbd.b', 'pyr', 'hou','hod']
+        sybls=['tsx', 'pho','bbd.b', 'pyr', 'hou','vff']
         main(sybls)
     elif sys.argv[1] == 'etf':
         sybls=['hix', 'hsu','hxu', 'QQQ:US', 'spy:us']
