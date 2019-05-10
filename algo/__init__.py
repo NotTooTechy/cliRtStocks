@@ -4,10 +4,11 @@ import datetime
 #START_DATE=datetime.datetime(2016, 1, 16)
 START_DATE=datetime.datetime(2012, 9, 16)
 START_DATE=datetime.datetime(2016, 1, 1)
-START_DATE=datetime.datetime(2015, 1, 15)
+#START_DATE=datetime.datetime(2009, 1, 1)
+#START_DATE=datetime.datetime(2017, 1, 1)
 #START_DATE=datetime.datetime(2007, 9, 16)
 END_DATE=datetime.datetime.now()
-#END_DATE=datetime.datetime(2019, 01, 8) #2018-05-16
+#END_DATE=datetime.datetime(2019, 02, 04) #2018-05-16
 
 api_key="ynfGhK3IYmAYvAyj9L2t"
 

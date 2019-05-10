@@ -68,7 +68,7 @@ total_initial = 0
 total = 0
 mvg_dict = {}
 for ticker in stocks:
-        os.system("rm data/%s.csv"%ticker)
+        os.system("rm -f data/%s.csv"%ticker)
 	window_dict= {}
 	max_list = []
 	max_window = -1.0

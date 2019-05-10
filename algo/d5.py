@@ -12,7 +12,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from copy import deepcopy as cp
-from __init__ import START_DATE, END_DATE
+from __init__ import START_DATE, END_DATE, chk_arg
 
 #INITIAL_CAPITAL = 5000.0
 STEP_BUY_THERESHOLD =  -1
@@ -81,14 +81,14 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 				pass#print '\t\tExit capital', capital,
 		elif close < short_mavg and i > 30 and sell_flag and step_sell>step_sell_th:
 			if fprint:
-				print '\tSELL at %.3f'%close, '\tEnter capital %.3f'%capital,'\t',
+				print '\tSELL at %.3f'%close, '\tCurrent capital %.3f'%capital,'\t',
 			buy_flag = True
 			sell_flag = False
 			step_sell=0
 			step_buy=0
 			capital += buy_size*close-10
 			if fprint:
-				print '\tExit capital %-.3f'%capital,'\t %-.3f'%(capital - captial_at_buy_time),
+                                print '\tExit capital %-.3f'%capital,'\tProfit: %-.3f'%(capital - captial_at_buy_time),
 				if  capital - captial_at_buy_time >0:
 					print "\t", "GAIN",
 				else:
@@ -108,7 +108,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	if fprint or True:
 		print
 		print ticker.upper(), '\t',
-		print "{:,}".format(INITIAL_CAPITAL), "{:,}".format(capital), '\tprofit:',"{:,}".format(capital - INITIAL_CAPITAL)
+                print "Initial captial:{:,}".format(INITIAL_CAPITAL), "\tCurrent capital: {:,}".format(capital), '\tTotal profit:',"{:,}".format(capital - INITIAL_CAPITAL)
 	return capital
 
 if __name__=='__main__':
@@ -122,6 +122,12 @@ if __name__=='__main__':
 		sshort = int(sshort)
 		short_window = sshort
 		long_window = sshort
+  elif chk_arg("json") is not None:
+                fjson = chk_arg("json")
+		with open(fjson, 'r') as fx:
+			data = json.load(fx)
+  		if _ticker in data:
+			sshort = int(data[_ticker][0])
   else:
 		with open('json/best_avg.json', 'r') as fx:
 			data = json.load(fx)
