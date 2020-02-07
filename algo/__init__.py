@@ -2,15 +2,16 @@ import sys
 import datetime
 
 #START_DATE=datetime.datetime(2016, 1, 16)
-START_DATE=datetime.datetime(2012, 9, 16)
-START_DATE=datetime.datetime(2016, 1, 1)
+#START_DATE=datetime.datetime(2016, 9, 16)
+START_DATE=datetime.datetime(2018, 02, 17)
 #START_DATE=datetime.datetime(2009, 1, 1)
 #START_DATE=datetime.datetime(2017, 1, 1)
 #START_DATE=datetime.datetime(2007, 9, 16)
 END_DATE=datetime.datetime.now()
 #END_DATE=datetime.datetime(2019, 02, 04) #2018-05-16
 
-api_key="ynfGhK3IYmAYvAyj9L2t"
+#alpha: https://www.alphavantage.co/support/#api-key
+api_key="EAE489DPENMJ722N"
 
 
 #START_DATE=datetime.datetime(2015, 1, 19)
@@ -18,7 +19,7 @@ api_key="ynfGhK3IYmAYvAyj9L2t"
 
 RISK_SELL = 0.96
 RISK_SELL = 0.9999
-RISK_SELL = 0.96
+RISK_SELL = 1
 
 def chk_arg(argument):
         if any(argument in s for s in sys.argv):
@@ -29,5 +30,3 @@ def chk_arg(argument):
                             return None
                         return ret
         return None
-
-

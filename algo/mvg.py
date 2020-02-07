@@ -12,6 +12,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from copy import deepcopy as cp
+from __init__ import START_DATE, END_DATE
 
 #INITIAL_CAPITAL = 5000.0
 STEP_BUY_THERESHOLD =  -1
@@ -23,42 +24,35 @@ class sma_return:
 		self.short_window = short_window
 		self.long_window = short_window
 		self.step_buy_th = -1
-		self.step_sell_th = 6 
+		self.step_sell_th = 6
 		self.INITIAL_CAPITAL = 17000.0
 		self.capital = None
-		self.step_sell = 0 
+		self.step_sell = 0
 		self.step_buy = 0
 		self.buy_flag = True
 		self.sell_fleg = False
-		self.start = datetime.datetime(2017, 1, 1)
-		self.end = datetime.datetime(2019, 1, 1)
+		self.start = START_DATE
+		self.end =END_DATE
 		self.instr = None
 		self.signals = None
 		self.fprint = None
 		self.profit = None
-	
+
 	def reset(self):
 		self.long_window = self.short_window
 		self.capital = None
-		self.step_sell = 0 
+		self.step_sell = 0
 		self.step_buy = 0
 		self.buy_flag = True
 		self.sell_fleg = False
 		self.signals = None
 		self.profit = None
-	
+
 	def get_data(self, fresh=True):
-		fname = 'data/%s.csv'%self.ticker.lower()
-		if not os.path.exists(fname):
-			try:
-				instr = pdr.get_data_yahoo(self.ticker, start=self.start, end=self.end)
-				instr.to_csv(fname)
-			except:
-				return None, None
-			
-		df = pd.read_csv(fname, header=0, index_col='Date', parse_dates=True)
+		fname = 'ALPHA_STORAGE/%s.csv'%self.ticker.lower()
+		df = pd.read_csv(fname, header=0, index_col='timestamp', parse_dates=True)
+		df = df.iloc[::-1] # reversing dataframe
 		df = df[(df.index > self.start) & (df.index <= self.end)]
-		#return instr, df
 		return df
 
 	def get_signals(self, instr):
@@ -67,13 +61,13 @@ class sma_return:
 		instr = self.get_data()
 		self.signals = pd.DataFrame(index=instr.index)
 		self.signals['signal'] = 0.0
-		self.signals['close'] = instr['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()
-		self.signals['short_mavg'] = instr['Adj Close'].rolling(window=self.short_window, min_periods=1, center=False).mean()
-		#self.signals['long_mavg'] = instr['Adj Close'].rolling(window=self.long_window, min_periods=1, center=False).mean()
-		self.signals['long_mavg'] = instr['Adj Close'].rolling(window=5, min_periods=1, center=False).mean()
-		self.signals['signal'][self.short_window:] = np.where(self.signals['short_mavg'][self.short_window:] 
+		self.signals['close'] = instr['adjusted_close'].rolling(window=1, min_periods=1, center=False).mean()
+		self.signals['short_mavg'] = instr['adjusted_close'].rolling(window=self.short_window, min_periods=1, center=False).mean()
+		#self.signals['long_mavg'] = instr['adjusted_close'].rolling(window=self.long_window, min_periods=1, center=False).mean()
+		self.signals['long_mavg'] = instr['adjusted_close'].rolling(window=5, min_periods=1, center=False).mean()
+		self.signals['signal'][self.short_window:] = np.where(self.signals['short_mavg'][self.short_window:]
 					> self.signals['long_mavg'][self.short_window:], 1.0, 0.0)
-		size = len(self.signals['close']) 
+		size = len(self.signals['close'])
 		if self.fprint:
 			print
 			print 'Date\tClose\tShort_avg\tLong_avg'

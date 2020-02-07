@@ -2,7 +2,6 @@
 import matplotlib
 matplotlib.use('Agg')
 
-import pandas_datareader as pdr
 import pandas as pd
 import datetime
 import sys
@@ -21,7 +20,7 @@ STEP_SELL_THRESHOLD = 6
 
 short_window = 20
 long_window = 50
-long_window =1 
+long_window =1
 
 fprint = json.loads(os.environ.get('fprint','false').lower())
 
@@ -34,21 +33,17 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 	step_buy = 0
 	close_max = 0
 	#long_window = short_window
-	instr = pdr.get_data_yahoo(ticker,
-	                          #start=datetime.datetime(2017, 7, 1),
-	                          start=START_DATE,
-	                          end=END_DATE)
-	fname = 'data/%s.csv'%ticker
-	if not os.path.exists(fname):
-	  instr.to_csv(fname)
-	df = pd.read_csv(fname, header=0, index_col='Date', parse_dates=True)
-	signals = pd.DataFrame(index=instr.index)
+	fname = 'ALPHA_STORAGE/%s.csv'%ticker
+	df = pd.read_csv(fname, header=0, index_col='timestamp', parse_dates=True)
+	df = df.iloc[::-1] # reversing dataframe
+	df = df[(df.index > START_DATE) & (df.index <= END_DATE)]
+	signals = pd.DataFrame(index=df.index)
 	signals['signal'] = 0.0
-	signals['close'] = instr['Adj Close'].rolling(window=1, min_periods=1, center=False).mean()
-	signals['short_mavg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).mean()
-	signals['short_max_avg'] = instr['Adj Close'].rolling(window=short_window, min_periods=1, center=False).max()
-	#signals['long_mavg'] = instr['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
-	signals['long_mavg'] = instr['Adj Close'].rolling(window=5, min_periods=1, center=False).mean()
+	signals['close'] = df['adjusted_close'].rolling(window=1, min_periods=1, center=False).mean()
+	signals['short_mavg'] = df['adjusted_close'].rolling(window=short_window, min_periods=1, center=False).mean()
+	signals['short_max_avg'] = df['adjusted_close'].rolling(window=short_window, min_periods=1, center=False).max()
+	#signals['long_mavg'] = df['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
+	signals['long_mavg'] = df['adjusted_close'].rolling(window=5, min_periods=1, center=False).mean()
 	signals['signal'][short_window:] = np.where(signals['short_mavg'][short_window:]
 	                                            > signals['long_mavg'][short_window:], 1.0, 0.0)
 	size = len(signals['close'])
@@ -91,7 +86,7 @@ def sma_return(ticker, short_window, INITIAL_CAPITAL=17.0*1000.0, step_buy_th=ST
 			sell_flag = False
 			step_sell=0
 			step_buy=0
-			buy_price =0 
+			buy_price =0
 			capital += buy_size*close-10
 			if fprint:
 				print '\t\tExit capital %-.3f'%capital,'\t\t %-.3f'%(capital - captial_at_buy_time),
@@ -137,7 +132,7 @@ if __name__=='__main__':
 		index = [i for i, s in enumerate(sys.argv) if 'long' in s][0]
 		llong = sys.argv[index].split('=')[1]
 		long_window = int(llong)
-	
+
   if any("capital" in s for s in sys.argv):
 		index = [i for i, s in enumerate(sys.argv) if 'capital' in s][0]
 		capital = sys.argv[index].split('=')[1]
